@@ -8,9 +8,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
 
-public class IncludeFragmentCompiler : IMethodPolicyHandler
+public class GetAuthorizationContextCompiler : IMethodPolicyHandler
 {
-    public string MethodName => nameof(IInboundContext.IncludeFragment);
+    public string MethodName => nameof(IInboundContext.GetAuthorizationContext);
 
     public void Handle(ICompilationContext context, InvocationExpressionSyntax node)
     {
@@ -19,12 +19,12 @@ public class IncludeFragmentCompiler : IMethodPolicyHandler
             context.Report(Diagnostic.Create(
                 CompilationErrors.ArgumentCountMissMatchForPolicy,
                 node.ArgumentList.GetLocation(),
-                "include-fragment"
+                "get-authorization-context"
             ));
             return;
         }
 
-        var fragmentId = node.ArgumentList.Arguments[0].Expression.ProcessParameter(context);
-        context.AddPolicy(new XElement("include-fragment", new XAttribute("fragment-id", fragmentId)));
+        var authorizationContext = node.ArgumentList.Arguments[0].Expression.ProcessParameter(context);
+        context.AddPolicy(new XElement("get-authorization-context", new XAttribute("authorization-context", authorizationContext)));
     }
 }

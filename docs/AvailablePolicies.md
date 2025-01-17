@@ -21,28 +21,55 @@ In this document, you can find a list of implemented policies. For policy detail
 * check-header
 * choose
 * cors
+* cross-domain
 * emit-metric
+* find-and-replace
 * forward-request
+* get-authorization-context
+* include-fragment
+* invoke-dapr-binding
 * ip-filter
 * json-to-xml
 * jsonp
+* limit-concurrency
 * llm-emit-token-metric
 * llm-semantic-cache-lookup
 * llm-semantic-cache-store
+* llm-token-limit
+* log-to-eventhub
 * mock-response
+* proxy
+* publish-to-dapr
 * quota
+* quota-by-key
 * rate-limit
 * rate-limit-by-key
+* redirect-content-urls
+* retry
 * return-response
 * rewrite-uri
+* send-one-way-request
 * send-request
 * set-backend-service
+* set-backend-service (Dapr)
 * set-body
 * set-header
 * set-method
 * set-query-parameter
+* set-status
 * set-variable
+* trace
+* validate-azure-ad-token
+* validate-client-certificate
+* validate-content
+* validate-headers
 * validate-jwt
+* validate-odata-request
+* validate-parameters
+* validate-status-code
+* wait
+* xml-to-json
+* xsl-transform
 
 Policies not listed here are not implemented yet, we are curious to know which [ones you'd like to use and are happy to review contributions](./../CONTRIBUTING.md).
 

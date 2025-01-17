@@ -8,9 +8,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Azure.ApiManagement.PolicyToolkit.Compiling.Policy;
 
-public class IncludeFragmentCompiler : IMethodPolicyHandler
+public class PublishToDaprCompiler : IMethodPolicyHandler
 {
-    public string MethodName => nameof(IInboundContext.IncludeFragment);
+    public string MethodName => nameof(IInboundContext.PublishToDapr);
 
     public void Handle(ICompilationContext context, InvocationExpressionSyntax node)
     {
@@ -19,12 +19,12 @@ public class IncludeFragmentCompiler : IMethodPolicyHandler
             context.Report(Diagnostic.Create(
                 CompilationErrors.ArgumentCountMissMatchForPolicy,
                 node.ArgumentList.GetLocation(),
-                "include-fragment"
+                "publish-to-dapr"
             ));
             return;
         }
 
-        var fragmentId = node.ArgumentList.Arguments[0].Expression.ProcessParameter(context);
-        context.AddPolicy(new XElement("include-fragment", new XAttribute("fragment-id", fragmentId)));
+        var daprConfig = node.ArgumentList.Arguments[0].Expression.ProcessParameter(context);
+        context.AddPolicy(new XElement("publish-to-dapr", new XAttribute("config", daprConfig)));
     }
 }
