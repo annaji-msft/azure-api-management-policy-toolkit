@@ -1,0 +1,641 @@
+﻿{
+  "authentication-basic": {
+    "scope": "all",
+    "multiple": false,
+    "sections": [ "inbound" ],
+    "title": "Authenticate with Basic",
+    "snippet": "<authentication-basic username=\"username\" password=\"password\" />",
+    "tooltip": "Authenticate with the backend service using Basic authentication. Use in the inbound section at API scope."
+  },
+  "authentication-certificate": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound" ],
+    "title": "Authenticate with client certificate",
+    "snippet": "<authentication-certificate thumbprint=\"thumbprint\" certificate-id=\"id\" />",
+    "tooltip": "Authenticate with the backend service using a client certificate. Use in the inbound section at API scope."
+  },
+  "base": {
+    "scope": "workspace, product, api, operation, resolver",
+    "multiple": false,
+    "sections": [ "inbound", "backend", "outbound", "on-error" ],
+    "title": null,
+    "snippet": null,
+    "tooltip": null
+  },
+  "block": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "backend", "outbound", "on-error" ],
+    "title": null,
+    "snippet": null,
+    "tooltip": null
+  },
+  "cache-lookup": {
+    "scope": "all",
+    "multiple": false,
+    "sections": [ "inbound" ],
+    "title": "Get from cache",
+    "snippet": "<cache-lookup vary-by-developer=\"true | false\" vary-by-developer-groups=\"true | false\" downstream-caching-type=\"none | private | public\" must-revalidate=\"true | false\" allow-private-response-caching=\"@(expression to evaluate)\">\r\n    <vary-by-header>Accept</vary-by-header> <!-- should be present in most cases -->\r\n    <vary-by-header>Accept-Charset</vary-by-header> <!-- should be present in most cases -->\r\n    <vary-by-header>Authorization</vary-by-header> <!-- should be present when allow-authorized-response-caching is \"true\"-->\r\n    <vary-by-header>header name</vary-by-header> <!-- optional, can repeated several times -->\r\n    <vary-by-query-parameter>parameter name</vary-by-query-parameter> <!-- optional, can repeated several times -->\r\n</cache-lookup>",
+    "tooltip": "Perform cache lookup and return a valid cached response when available. Appropriately respond to cache validation requests from callers. Use anywhere in the inbound section at Workspace, Product, API, or Operation scopes."
+  },
+  "cache-lookup-value": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "backend", "outbound", "on-error" ],
+    "title": "Get value from cache",
+    "snippet": "<cache-lookup-value key=\"@(expression to evaluate)\" default-value=\"@(expression to evaluate)\" variable-name=\"name of a variable to put response into\" />",
+    "tooltip": "Perform cache lookup and returned value under the key, if available, or default. If value is not present and no default is specified, variable will not be set. Use at any scope in any section except <backend>."
+  },
+  "cache-remove-value": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "backend", "outbound", "on-error" ],
+    "title": "Remove value from cache",
+    "snippet": "<cache-remove-value key=\"@(expression to evaluate)\" />",
+    "tooltip": "Remove value from cache under the key. Use at any scope in any section except <backend>."
+  },
+  "cache-store": {
+    "scope": "all",
+    "multiple": false,
+    "sections": [ "outbound" ],
+    "title": "Store to cache",
+    "snippet": "<cache-store duration=\"seconds\" />",
+    "tooltip": "Cache responses according to the specified cache configuration. Use anywhere in the outbound section at Workspace, Product, API, or Operation scopes."
+  },
+  "cache-store-value": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "backend", "outbound", "on-error" ],
+    "title": "Store value in cache",
+    "snippet": "<cache-store-value key=\"@(expression to evaluate)\" value=\"@(expression to evaluate)\" duration=\"seconds\" />",
+    "tooltip": "Store value in cache under a key for duration. Use at any scope in any section except <backend>."
+  },
+  "check-header": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound" ],
+    "title": "Check HTTP header",
+    "snippet": "<check-header name=\"header name\"\r\n              failed-check-httpcode=\"http status code to return on failure\"\r\n              failed-check-error-message=\"error message to return\"\r\n              ignore-case=\"true | false\">\r\n    <value>value</value> <!-- if there are multiple possible allowed values, then add additional value elements -->\r\n</check-header>",
+    "tooltip": "Check header and return specified HTTP status code if it doesn't exist or match expected value. Works for both response and request headers – policy can be applied in inbound or outbound sections at any scope."
+  },
+  "choose": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "backend", "outbound", "on-error" ],
+    "title": "Control flow",
+    "snippet": "<choose>\r\n    <when condition=\"@(expression to evaluate)\">\r\n    </when>\r\n    <when condition=\"@(expression to evaluate)\">\r\n    </when>\r\n    <otherwise>\r\n    </otherwise>\r\n</choose>",
+    "tooltip": "Conditionally apply policy statements based on the results of the evaluation of Boolean expressions. Use at any scope in the inbound and outbound sections."
+  },
+  "cors": {
+    "scope": "all",
+    "multiple": false,
+    "sections": [ "inbound" ],
+    "title": "CORS",
+    "snippet": "<cors>\r\n    <allowed-origins>\r\n        <origin>*</origin> <!-- allow any -->\r\n        <!-- OR a list of one or more specific URIs (case-sensitive) -->\r\n        <origin>URI</origin> <!-- URI must include scheme, host, and port. If port is omitted, 80 is assumed for http and 443 is assumed for https. -->\r\n    </allowed-origins>\r\n    <allowed-methods> <!-- allow any -->\r\n        <method>*</method>\r\n    </allowed-methods>\r\n    <allowed-headers> <!-- allow any -->\r\n        <header>*</header>\r\n    </allowed-headers>\r\n</cors>",
+    "tooltip": "CORS stands for cross-origin resource sharing. Add CORS support to an operation or an API to allow cross-domain calls from browser-based clients. Use in the inbound section only."
+  },
+  "cross-domain": {
+    "scope": "tenant",
+    "multiple": true,
+    "sections": [ "inbound" ],
+    "supports-partial-configuration": true,
+    "title": "Allow cross domain calls",
+    "snippet": "<cross-domain>\r\n    <cross-domain-policy>\r\n        <allow-http-request-headers-from domain='*' headers='*' />\r\n    </cross-domain-policy>\r\n</cross-domain>",
+    "tooltip": "Make the API accessible from Adobe Flash and Microsoft Silverlight browser-based clients. Use in the inbound section at Global scope."
+  },
+  "get-authorization-context": {
+    "disabled": true,
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "backend", "outbound" ],
+    "title": "Get authorization context",
+    "snippet": "<get-authorization-context provider-id=\"AuthorizationProviderId\" authorization-id=\"AuthorizationId\" identity-type=\"managed\" context-variable-name=\"ContextVariableName\" ignore-error=\"false\" />",
+    "tooltip": "Get authorization context for the specified AuthorizationProvider and Authorization and bind into a variable."
+  },
+  "find-and-replace": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "backend", "outbound", "on-error" ],
+    "title": "Find and replace string in body",
+    "snippet": "<find-and-replace from=\"what to replace\" to=\"replacement\" />",
+    "tooltip": "Find a request or response substring and replace it with a different substring. Use in the inbound and outbound sections at any scope."
+  },
+  "forward-request": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "backend" ],
+    "title": "Forward request to backend service",
+    "snippet": "<forward-request timeout=\"seconds\" buffer-request-body=\"false\" />",
+    "tooltip": "Forward request to the backend service using information in the context and receive a response, waiting no longer then specified timeout value. Use at any scope in the backend section."
+  },
+  "ip-filter": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound" ],
+    "title": "Restrict caller IPs",
+    "snippet": "<ip-filter action=\"allow | forbid\">\r\n    <address>address</address>\r\n    <address-range from=\"address\" to=\"address\" />\r\n</ip-filter>",
+    "tooltip": "Allow calls only from specific IP addresses and/or address ranges. Forbid calls from specific IP addresses and/or address ranges. Use in the inbound section at any scope."
+  },
+  "jsonp": {
+    "scope": "all",
+    "multiple": false,
+    "sections": [ "outbound" ],
+    "title": "JSONP",
+    "snippet": "<jsonp callback-parameter-name=\"callback function name\" />",
+    "tooltip": "Add support for JSONP to an operation or an API to allow cross-domain calls from JavaScript browser-based clients. Use in the outbound section only."
+  },
+  "json-to-xml": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "outbound", "on-error", "backend" ],
+    "title": "Convert JSON to XML",
+    "snippet": "<json-to-xml apply=\"always | content-type-json\" consider-accept-header=\"true | false\" parse-date=\"false\" />",
+    "tooltip": "Convert request or response body from JSON to XML. Use in the inbound or outbound sections at API or Operation scopes."
+  },
+  "limit-concurrency": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "backend", "outbound", "on-error" ],
+    "title": "Limit request processing concurrency level",
+    "snippet": "<limit-concurrency key=\"@(expression) or a constant string\" max-count=\"10\" >\r\n</limit-concurrency>",
+    "tooltip": "Limit how many calls may be processed in parallel for the duration of this policy's body."
+  },
+  "log-to-eventhub": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "backend", "outbound", "on-error" ],
+    "title": "Log to EventHub",
+    "snippet": "<log-to-eventhub logger-id ='logger-id'>\r\n                 @( string.Join(\",\", DateTime.UtcNow, context.Deployment.ServiceName, context.RequestId, context.Request.IpAddress, context.Operation.Name) ) \r\n             </log-to-eventhub>",
+    "tooltip": "Send custom messages to Event Hub. Use at any scope in the inbound or outbound sections."
+  },
+  "mock-response": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "outbound", "on-error" ],
+    "title": "Mock Response",
+    "snippet": "<mock-response status-code='200' content-type='application/json'/>",
+    "tooltip": "Mock response based on operation responses samples/schemas. Use at any scope in the inbound or outbound sections."
+  },
+  "quota": {
+    "scope": "product",
+    "multiple": false,
+    "sections": [ "inbound" ],
+    "title": "Set usage quota per subscription",
+    "snippet": "<quota calls=\"number\" bandwidth=\"kilobytes\" renewal-period=\"seconds\">\r\n    <api name=\"name\" calls=\"number\" bandwidth=\"kilobytes\">\r\n        <operation name=\"name\" calls=\"number\" bandwidth=\"kilobytes\" />\r\n    </api>\r\n</quota>",
+    "tooltip": "Enforce a renewable or lifetime call volume and/or bandwidth quota per subscription. Use in the inbound section at Product scope."
+  },
+  "quota-by-key": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound" ],
+    "title": "Set usage quota per key",
+    "snippet": "<quota-by-key calls=\"number\" bandwidth=\"kilobytes\" \r\n    renewal-period=\"period as number of seconds or xml timespan as 'PxxYxxMxxDTxxHxxMxxS' where xx are numbers\" \r\n    counter-key=\"@(expression) or a constant string\"\r\n    first-period-start=\"optional, date as 2002-05-30T09:30:10-06:00\"\r\n    increment-condition=\"optional boolean expression like @( context.Response.StatusCode >= 200 && context.Response.StatusCode < 400 ) \"\r\n    increment-count=\"expression like @(context.Request.Method == \"POST\" ? 1:0) or a constant integer value. Optional, by default = 1.\"\r\n/>",
+    "tooltip": "Enforce a renewable or lifetime call volume and/or bandwidth quota per calculated key. Use in the inbound section at any scope.",
+    "skus": "Dedicated"
+  },
+  "rate-limit": {
+    "scope": "workspace, product, api, operation, resolver",
+    "multiple": false,
+    "sections": [ "inbound" ],
+    "title": "Limit call rate per subscription",
+    "snippet": " <rate-limit calls=\"number\" renewal-period=\"seconds\">\r\n    <api name=\"name\" calls=\"number\">\r\n        <operation name=\"name\" calls=\"number\" />\r\n    </api>\r\n</rate-limit>",
+    "tooltip": "Arrest usage spikes by limiting calls and/or bandwidth consumption rate per subscription. Use in the inbound section at Workspace, Product, API, or Operation scopes."
+  },
+  "rate-limit-by-key": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound" ],
+    "title": "Limit call rate per key",
+    "snippet": "<rate-limit-by-key calls=\"number\" renewal-period=\"seconds\" \r\n    counter-key=\"expression like @(context.Subscription.Id) or a constant string\"\r\n    increment-count=\"optional, by default = 1\"\r\n    flexible-retry-window=\"optional, by default = false\"\r\n/>",
+    "tooltip": "Arrest usage spikes by limiting calls and/or bandwidth consumption rate per calculated key. Use in the inbound section at any scope.",
+    "skus": "Dedicated, SkuV2"
+  },
+  "redirect-content-urls": {
+    "scope": "all",
+    "multiple": false,
+    "sections": [ "inbound", "outbound" ],
+    "title": "Mask URLs in content",
+    "snippet": "<redirect-content-urls />",
+    "tooltip": "Use in the outbound section to re-write response body links and Location header values making them point to the proxy. Use in the inbound section for an opposite effect. Apply at API or Operation scopes."
+  },
+  "retry": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "backend", "outbound", "on-error" ],
+    "title": "Retry",
+    "snippet": "<retry condition=\"@( decide whether retry is required )\" count=\"10\" interval=\"seconds\">\r\n    <!-- put retryable sequence here -->\r\n</retry>",
+    "tooltip": "Retry execution of the enclosed policy statements, if and until the condition is met. Execution will repeat at the specified time interval, up to the specified count."
+  },
+  "return-response": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "backend", "outbound", "on-error" ],
+    "title": "Return response",
+    "snippet": "<return-response response-variable-name=\"existing response variable\">\r\n    <set-status code=\"code\" reason=\"reason\" />\r\n    <set-header name=\"header name\" exists-action=\"override | skip | append | delete\">\r\n    <value>value</value> <!-- for multiple headers with the same name add additional value elements -->\r\n</set-header>\r\n    <set-body>new body value as text</set-body>\r\n</return-response>",
+    "tooltip": "Abort pipeline execution and return the specified response directly to the caller. Use at any scope in the inbound and outbound sections."
+  },
+  "rewrite-uri": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound" ],
+    "title": "Rewrite URL",
+    "snippet": "<rewrite-uri template=\"uri template\" />",
+    "tooltip": "Convert request URL from its public form to the form expected by the web service. Use anywhere in the inbound section at Operation scope only."
+  },
+  "send-one-way-request": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "backend", "outbound", "on-error" ],
+    "title": "Send one way request",
+    "snippet": "<send-one-way-request mode=\"new | copy\">\r\n    <set-url>service URL to call</set-url>\r\n    <set-method>GET</set-method>\r\n    <set-header name=\"header name\" exists-action=\"override | skip | append | delete\">\r\n        <value>value</value> <!-- for multiple headers with the same name add additional value elements -->\r\n    </set-header>\r\n    <set-body>new body value as text</set-body>\r\n</send-one-way-request>",
+    "tooltip": "Send provided request to the specified URL, without waiting for response. Use at any scope in the inbound and outbound sections."
+  },
+  "send-request": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "backend", "outbound", "on-error" ],
+    "title": "Send request",
+    "snippet": "<send-request mode=\"new | copy\" response-variable-name=\"name of a variable to put response into\" timeout=\"seconds\" ignore-error=\"false | true\">\r\n    <set-url>service URL to call</set-url>\r\n    <set-method>GET</set-method>\r\n    <set-header name=\"header name\" exists-action=\"override | skip | append | delete\">\r\n        <value>value</value> <!-- for multiple headers with the same name add additional value elements -->\r\n    </set-header>\r\n    <set-body>new body value as text</set-body>\r\n</send-request>",
+    "tooltip": "Send provided request to the specified URL, waiting no longer then set timeout value. Use at any scope in the inbound and outbound sections."
+  },
+  "set-backend-service": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "backend", "outbound", "on-error" ],
+    "title": "Set backend service",
+    "snippet": "<set-backend-service base-url=\"https://backend.com/service\" />",
+    "tooltip": "Change backend service where the incoming calls will be directed. Use in the inbound section only at any scope."
+  },
+  "set-body": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "backend", "outbound", "on-error" ],
+    "title": "Set body",
+    "snippet": "<set-body template=\"none\">new body value as text</set-body>",
+    "tooltip": "Set message body to a specific string value. The policy has no effect on the Content-Type header value. Use at any scope in the inbound or outbound sections."
+  },
+  "set-header": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "backend", "outbound", "on-error" ],
+    "title": "Set HTTP header",
+    "snippet": "<set-header name=\"header name\" exists-action=\"override | skip | append | delete\">\r\n    <value>value</value> <!-- for multiple headers with the same name add additional value elements -->\r\n</set-header>",
+    "tooltip": "Add a new header, change the value of an existing header or remove a header. Works for both response and request headers – policy can be applied in inbound or outbound sections at any scope."
+  },
+  "set-method": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "backend", "outbound", "on-error" ],
+    "title": "Set request method",
+    "snippet": "<set-method>METHOD</set-method>",
+    "tooltip": "Change HTTP method to the specified value"
+  },
+  "set-query-parameter": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "backend", "outbound", "on-error" ],
+    "title": "Set query string parameter",
+    "snippet": "<set-query-parameter name=\"param name\" exists-action=\"override | skip | append | delete\">\r\n    <value>value</value> <!-- for multiple parameters with the same name add additional value elements -->\r\n</set-query-parameter>",
+    "tooltip": "Add a new query string parameter, change the value of an existing parameter or remove a parameter. Can be applied in the inbound section at any scope."
+  },
+  "set-status": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "backend", "outbound", "on-error" ],
+    "title": "Set status code",
+    "snippet": "<set-status code=\"code\" reason=\"reason\" />",
+    "tooltip": "Change HTTP status code to the specified value. Use at any scope in the outbound sections."
+  },
+  "set-variable": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "backend", "outbound", "on-error" ],
+    "title": "Set context variable",
+    "snippet": "<set-variable name=\"variable name\" value=\"@(expression to evaluate)\" />",
+    "tooltip": "Persist a value in a named context variable for later access from expressions. Use at any scope in the inbound and outbound sections."
+  },
+  "trace": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "backend", "outbound", "on-error" ],
+    "title": "Output trace information",
+    "snippet": "<trace source=\"source name\" severity\"verbose | information | error\">\r\n    <message>@(context.Request.Url.ToUri().ToString())</message>\r\n    <metadata name=\"name\" value=\"value\"/>@(context.Request.Url.ToUri().ToString())</message>\r\n</trace>",
+    "tooltip": "Output information into trace logs (if request is executed with tracing enabled) or diagnsotic logs (if diagnostic is enabled)."
+  },
+  "validate-jwt": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound" ],
+    "title": "Validate JWT",
+    "snippet": "<validate-jwt header-name=\"Insert HTTP Header Name here\" failed-validation-httpcode=\"401\" failed-validation-error-message=\"Unauthorized\">\r\n    <issuer-signing-keys>\r\n        <key>Base64 Encoded Key 1</key>\r\n         <!-- if there are multiple possible allowed values, then add additional value elements -->\r\n    </issuer-signing-keys>\r\n    <audiences>\r\n        <audience>Audience 1</audience>\r\n         <!-- if there are multiple possible allowed values, then add additional value elements -->\r\n    </audiences>\r\n    <issuers>\r\n        <issuer>Issuer 1</issuer>\r\n         <!-- if there are multiple possible allowed values, then add additional value elements -->\r\n    </issuers>\r\n    <required-claims>\r\n        <claim name=\"claim1\" match=\"all\">\r\n            <value>value1</value>\r\n            <value>value2</value>\r\n        </claim>\r\n         <!-- if there are multiple possible allowed values, then add additional value elements -->\r\n    </required-claims>\r\n</validate-jwt>",
+    "tooltip": "Check and validate a JWT in a header or query parameter. Use in the inbound section at any scope."
+  },
+  "wait": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "backend", "outbound", "on-error" ],
+    "title": "Wait for...",
+    "snippet": "<wait for=\"all|any\">\r\n    <send-request ... />\r\n    <cache-lookup-value ... />\r\n</wait>",
+    "tooltip": "Wait for all or any of the send request policies to complete before proceeding. Use at any scope in the inbound and outbound sections."
+  },
+  "xml-to-json": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "outbound", "on-error", "backend" ],
+    "title": "Convert XML to JSON",
+    "snippet": "<xml-to-json kind=\"javascript-friendly | direct\" apply=\"always | content-type-xml\" consider-accept-header=\"true | false\" preserve-whitespace-nodes=\"true | false\"/>",
+    "tooltip": "Convert request or response body from XML to either \"JSON friendly\" or \"XML faithful\" form of JSON. Use in the inbound or outbound sections at API or Operation scopes."
+  },
+  "xsl-transform": {
+    "disabled": false,
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "outbound", "on-error" ],
+    "title": "Transform XML using an XSLT",
+    "snippet": "<xsl-transform>\r\n\t\t\t<parameter name=\"User-Agent\">@(context.Request.Headers.GetValueOrDefault(\"User-Agent\",\"non-specified\"))</parameter>\r\n\t\t\t<xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">\r\n\t\t\t\t<xsl:output method=\"xml\" indent=\"yes\" />\r\n\t\t\t\t<xsl:param name=\"User-Agent\" />\r\n\t\t\t\t<xsl:template match=\"* | @* | node()\">\r\n\t\t\t\t\t<xsl:copy>\r\n\t\t\t\t\t\t<xsl:if test=\"self::* and not(parent::*)\">\r\n\t\t\t\t\t\t\t<xsl:attribute name=\"User-Agent\">\r\n\t\t\t\t\t\t\t\t<xsl:value-of select=\"$User-Agent\" />\r\n\t\t\t\t\t\t\t</xsl:attribute>\r\n\t\t\t\t\t\t</xsl:if>\r\n\t\t\t\t\t\t<xsl:apply-templates select=\"* | @* | node()\" />\r\n\t\t\t\t\t</xsl:copy>\r\n\t\t\t\t</xsl:template>\r\n\t\t\t</xsl:stylesheet>\r\n\t\t</xsl-transform>",
+    "tooltip": "Transform request or response body using XSLTransform. Use in the inbound, outbound and on-error sections at any scope."
+  },
+  "proxy": {
+    "disabled": false,
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound" ],
+    "title": "Set http proxy for backend request",
+    "snippet": "<proxy url=\"http://localhost:8080\" username=\"username\" password=\"password\" />",
+    "tooltip": "Specify http proxy location and credentials."
+  },
+  "invoke-request": {
+    "disabled": false,
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound" ],
+    "title": "Invoke gateway URI",
+    "snippet": "<invoke-request url=\"@(context.Request.Headers.GetValueOrDefault(\"X-Invoke-Uri\"))\" />",
+    "tooltip": "Redirect incoming request to a different gateway URI restarting request processing."
+  },
+  "authentication-token": {
+    "disabled": true,
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "outbound", "on-error" ],
+    "title": "Authenticate with OAuth2 token",
+    "snippet": "<authentication-token token-type=\"managed-service-identity | token-service\" token-service-url=\"https://[token-vault-name].westcentralus.tokenvault.azure.net/services/dropbox/tokens/sampleToken\" resource-url=\"https://graph.microsoft.com\" ignore-error=\"false | true\"/>",
+    "tooltip": "Authenticate backend with OAuth2 token. Call Token Store to obtain OAuth2 token or use Managed Indentity Service (MSI). This can be used to access OAuth protected services or SAAS providers."
+  },
+  "authentication-token-store": {
+    "disabled": true,
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "outbound", "on-error" ],
+    "title": "Authenticate with token obtained from Token Store",
+    "snippet": "<authentication-token-store token-id=\"https://[token-store-name].westcentralus.tokenvault.azure.net/services/dropbox/tokens/sampleToken\" ignore-error=\"false | true\" output-token-variable-name=\"tokenStoreToken\"/>",
+    "tooltip": "Authenticate backend with OAuth2 token. Call Token Store to obtain OAuth2 token using managed identity. This can be used to access OAuth protected services or SAAS providers."
+  },
+  "authentication-managed-identity": {
+    "disabled": false,
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "outbound", "on-error" ],
+    "title": "Authenticate with managed identity token",
+    "snippet": "<authentication-managed-identity resource=\"https://graph.microsoft.com\" ignore-error=\"false | true\" output-token-variable-name=\"managedServiceToken\" />",
+    "tooltip": "Authenticate backend with managed identity OAuth2 token. This can be used to access OAuth protected services."
+  },
+  "publish-to-dapr": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "outbound", "on-error" ],
+    "title": "Publish messages through Dapr.",
+    "snippet": "<publish-to-dapr topic=\"order-created\"/>",
+    "tooltip": "Publish messages through dapr's pub-sub feature. Other apps on dapr runtime can consume these messages if they are subscribed to the specific topic."
+  },
+  "invoke-dapr-binding": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "outbound", "on-error" ],
+    "title": "Use API Management as a dapr output binding app",
+    "snippet": "<invoke-dapr-binding name=\"kafka\"><data>Hello World</data></invoke-dapr-binding>",
+    "tooltip": "Use API Management as a dapr output binding app"
+  },
+  "set-request-metric-dimension-value": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "outbound", "on-error" ],
+    "title": "Set custom dimension value for first party request mdm metric",
+    "snippet": "<set-request-metric-dimension-value name=\"connection-id\" value=\"myconnection\" />",
+    "tooltip": "Set custom dimension value for first party request mdm metric"
+  },
+  "validate-content": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "outbound", "on-error" ],
+    "title": "Validate content",
+    "snippet": "<validate-content unspecified-content-type-action=\"ignore|prevent|detect\" max-size=\"bytes\" size-exceeded-action=\"ignore|prevent|detect\" errors-variable-name=\"name\"> \r\n\t <content type=\"string, for example: application/json, application/hal+json\" validate-as=\"json\" action=\"ignore|prevent|detect\" /> \r\n </validate-content>",
+    "tooltip": "Validate content against OpenApi schema"
+  },
+  "validate-parameters": {
+    "scope": "all",
+    "multiple": false,
+    "sections": [ "inbound" ],
+    "title": "Validate parameters",
+    "snippet": "<validate-parameters specified-parameter-action=\"ignore|prevent|detect\" unspecified-parameter-action=\"ignore|prevent|detect\" errors-variable-name=\"name\">\r\n\t<headers specified-parameter-action=\"ignore|prevent|detect\" unspecified-parameter-action=\"ignore|prevent|detect\">\r\n\t\t<parameter name=\"headerName\" action=\"ignore|prevent|detect\" />\r\n\t</headers>\r\n\t<query specified-parameter-action=\"ignore|prevent|detect\" unspecified-parameter-action=\"ignore|prevent|detect\">\r\n\t\t<parameter name=\"paramName\" action=\"ignore|prevent|detect\" />\r\n\t</query>\r\n\t<path specified-parameter-action=\"ignore|prevent|detect\">\r\n\t\t<parameter name=\"paramName\" action=\"ignore|prevent|detect\" />\r\n\t</path>\r\n</validate-parameters>\r\n",
+    "tooltip": "Validate parameters against OpenApi schema"
+  },
+  "validate-headers": {
+    "scope": "all",
+    "multiple": false,
+    "sections": [ "outbound", "on-error" ],
+    "title": "Validate response headers",
+    "snippet": "<validate-headers specified-header-action=\"ignore|prevent|detect\" unspecified-header-action=\"ignore|prevent|detect\" errors-variable-name=\"name\">\r\n\t<header name=\"headerName\" action=\"ignore|prevent|detect\" />\r\n</validate-headers>\r\n",
+    "tooltip": "Validate response headers against OpenApi schema"
+  },
+  "validate-status-code": {
+    "scope": "all",
+    "multiple": false,
+    "sections": [ "outbound", "on-error" ],
+    "title": "Validate response status code",
+    "snippet": "<validate-status-code unspecified-status-code-action=\"ignore|prevent|detect\" errors-variable-name=\"name\">\r\n\t<status-code code=\"int\" action=\"ignore|prevent|detect\" />\r\n</validate-status-code>\r\n",
+    "tooltip": "Validate response status code against OpenApi schema"
+  },
+  "emit-metric": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "outbound", "on-error" ],
+    "title": "Emit custom metric",
+    "snippet": "<emit-metric name=\"Content length\" value=\"@(int.Parse(context.Request.Headers.GetValueOrDefault(\"Content-Length\", \"0\")))\">\n\t<dimension name=\"API\" /><dimension name=\"Authorized\" value=\"@(context.User != null)\" /></emit-metric>",
+    "tooltip": "Emits custom metric to Application Insights"
+  },
+  "validate-client-certificate": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound" ],
+    "snippet": "<validate-client-certificate validate-trust=\"true\" validate-revocation=\"true\" validate-not-before=\"true\" validate-not-after=\"true\" ignore-error=\"false\">\r\n    <identities>\r\n        <identity subject=\"CN=contoso.com\" issuer-thumbprint=\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\" />\r\n    </identities>\r\n</validate-client-certificate>",
+    "title": "Validate client certificate",
+    "tooltip": "Validate client certificate."
+  },
+  "validate-graphql-request": {
+    "scope": "api, product",
+    "multiple": false,
+    "sections": [ "inbound" ],
+    "title": "Validate GraphQL request",
+    "snippet": "<validate-graphql-request error-variable-name=\"name\" max-depth=\"5\" max-size=\"1024\">\r\n <authorize>\r\n <rule path=\"path\" action=\"remove\"/></validate-graphql-request>",
+    "tooltip": "Validate GraphQL request",
+    "apitype": [ "GraphQL" ]
+  },
+  "validate-odata-request": {
+    "scope": "api",
+    "multiple": false,
+    "sections": [ "inbound" ],
+    "title": "Validate OData request",
+    "snippet": "<validate-odata-request default-odata-version=\"4.0\" />",
+    "tooltip": "Validate OData request",
+    "apitype": [ "OData" ]
+  },
+  "include-fragment": {
+    "disabled": true,
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound", "backend", "outbound", "on-error" ],
+    "title": "Include policy fragment",
+    "snippet": "<include-fragment fragment-id=\"policy fragment name\" />",
+    "tooltip": "Include policy fragment."
+  },
+  "validate-azure-ad-token": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound" ],
+    "title": "Validate Azure AD Token",
+    "snippet": "<validate-azure-ad-token tenant-id=\"Id of Azure AD tenant\" header-name=\"Insert HTTP Header Name here\" failed-validation-httpcode=\"401\" failed-validation-error-message=\"Unauthorized\"><client-application-ids><application-id>Id of Azure AD application</application-id></client-application-ids></validate-azure-ad-token>",
+    "tooltip": "Check and validate a JWT issued by Azure AD in a header or query parameter. Use in the inbound section at any scope."
+  },
+  "publish-event": {
+    "scope": "resolver",
+    "multiple": true,
+    "sections": [ "outbound" ],
+    "title": "Publish Event",
+    "snippet": "<publish-event> <targets> <graphql-subscription id=\"onFamilyCreated\"/> <graphql-subscription id=\"onPersonCreated\"/> </targets> </publish-event>",
+    "tooltip": "Publish Event"
+  },
+  "http-data-source": {
+    "scope": "resolver",
+    "multiple": false,
+    "title": "Http data source",
+    "snippet": "<http-data-source>\r\n <http-request>\r\n <set-url>service URL to call</set-url>\r\n<set-method>GET</set-method>\r\n</http-request>\r\n</http-data-source>",
+    "tooltip": "Synthetic GraphQL Resolver that resolves values with HTTP requests"
+  },
+  "cosmosdb-data-source": {
+    "scope": "resolver",
+    "multiple": false,
+    "title": "Cosmos Data Source",
+    "snippet": "<cosmosdb-data-source>\r\n <connection-info>\r\n <connection-string>AccountEndpoint=https://YourCosmosDb.documents.azure.com/;AccountKey=YourKey;</connection-string>\r\n <database-name>YourDatabase</database-name>\r\n<container-name>YourContainer</container-name>\r\n</connection-info>\r\n <query-request>\r\n <sql-statement>SELECT * FROM c</sql-statement>\r\n </query-request>\r\n </cosmosdb-data-source>",
+    "tooltip": "Cosmos Data Source Resolvers"
+  },
+  "sql-data-source": {
+    "scope": "resolver",
+    "multiple": false,
+    "title": "Azure SQL data source",
+    "snippet": "<sql-data-source>\r\n <connection-info>\r\n <connection-string>Server=tcp:sql.database.windows.net,1433;Initial Catalog=sql-database</connection-string>\r\n </connection-info>\r\n <request>\r\n <statement>\r\n  SELECT\r\n    p.[Id] AS [Id]\r\n    p.[FirstName] AS [FirstName]\r\n    p.[LastName] AS [LastName]\r\n  FROM [Person] p\r\n  JOIN [Family] f ON p.[FamilyId] = f.[Id]</statement>\r\n </request>\r\n</sql-data-source>",
+    "tooltip": "Synthetic GraphQL Resolver that resolves values with Azure SQL requests"
+  },
+  "graphql-data-source": {
+    "scope": "resolver",
+    "multiple": false,
+    "title": "GraphQL data source",
+    "snippet": "<graphql-data-source><request>\r\n <document>\r\n query { getProfile { name title } }\r\n </document>\r\n </request>\r\n</graphql-data-source>",
+    "tooltip": "Synthetic GraphQL Resolver that resolves values with subsequent GraphQL requests"
+  },
+  "set-url": {
+    "scope": "resolver",
+    "multiple": true,
+    "title": "Set request URL",
+    "snippet": "<set-url>URL</set-url>",
+    "tooltip": "Change URL to the specified value"
+  },
+  "lm-token-limit": {
+    "disabled": true,
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound" ],
+    "title": "Limit language model token rate per key",
+    "snippet": "<lm-token-limitapi-type=\"azure-openai\"\r\n    tokens-per-minute=\"number\"\r\n    counter-key=\"expression like @(context.Subscription.Id) or a constant string\"\r\n/>",
+    "tooltip": "Arrest usage spikes by limiting language model tokens per calculated key. Use in the inbound section at any scope.",
+    "skus": "Dedicated, SkuV2"
+  },
+  "azure-openai-token-limit": {
+    "disabled": false,
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound" ],
+    "title": "Limit Azure OpenAI language model token rate per key",
+    "snippet": "<azure-openai-token-limit tokens-per-minute=\"number\"\r\n    token-quota=\"number\"\r\n    counter-key=\"expression like @(context.Subscription.Id) or a constant string\"\r\n    estimate-prompt-tokens=\"false or true\"\r\n/>",
+    "tooltip": "Arrest usage spikes by limiting Azure OpenAI language model tokens per calculated key. Use in the inbound section at any scope.",
+    "skus": "Dedicated, SkuV2"
+  },
+  "azure-openai-emit-token-metric": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound" ],
+    "title": "Emit metrics for Azure OpenAI language model tokens consumed",
+    "snippet": "<azure-openai-emit-token-metric namespace=\"OpenAI\"\r\n    name=\"total-tokens\" >\r\n    <dimension name=\"Subscription ID\" />\r\n     <azure-openai-emit-token-metric/>",
+    "tooltip": "Track usage of Azure OpenAI language model tokens. Use in the inbound section at any scope."
+  },
+  "azure-openai-semantic-cache-lookup": {
+    "scope": "all",
+    "multiple": false,
+    "sections": [ "inbound" ],
+    "title": "Lookup from cache using semantic search",
+    "snippet": "<azure-openai-semantic-cache-lookup score-threshold=\"0.05\" \"embeddings-backend-id\"=\"azure-openai-backend\" \"embeddings-backend-auth\"=\"system-assigned\"/>\",",
+    "tooltip": "Get cached responses of OpenAI requests, based on vector proximity of the prompt to previous requests, and a given score threshold."
+  },
+  "azure-openai-semantic-cache-store": {
+    "scope": "all",
+    "multiple": false,
+    "sections": [ "outbound" ],
+    "title": "Store to semantic cache",
+    "snippet": "<azure-openai-semantic-cache-store duration=\"60\" />",
+    "tooltip": "Caches responses according to the specified azure OpenAI cache configuration. Use anywhere in the outbound section at Workspace, Product, API, or Operation scopes."
+  },
+  "llm-token-limit": {
+    "disabled": false,
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound" ],
+    "title": "Limit language model token rate per key",
+    "snippet": "<llm-token-limit tokens-per-minute=\"number\"\r\n    counter-key=\"expression like @(context.Subscription.Id) or a constant string\"\r\n    estimate-prompt-tokens=\"false or true\"\r\n/>",
+    "tooltip": "Arrest usage spikes by limiting language model tokens per calculated key. Use in the inbound section at any scope.",
+    "skus": "Dedicated, SkuV2"
+  },
+  "llm-content-safety": {
+    "disabled": true,
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound" ],
+    "title": "Enforce content safety checks by leveraging Azure Content Safety",
+    "snippet": "<llm-content-safety backend-id=\"id\" shield-prompt=\"false\">\r\n    <categories>\r\n        <category name=\"name\" threshold=\"number\" />\r\n    </categories>\r\n    <blocklist-names>\r\n        <name>blocklist-name</name>\r\n    </blocklist-names>\r\n</llm-content-safety>",
+    "tooltip": "Block content that gets flagged in Azure Content Safety or contains blocklisted terms. Use in the inbound section at any scope."
+  },
+  "llm-emit-token-metric": {
+    "scope": "all",
+    "multiple": true,
+    "sections": [ "inbound" ],
+    "title": "Emit metrics for language model tokens consumed",
+    "snippet": "<llm-emit-token-metric namespace=\"LLM\"\r\n    name=\"total-tokens\" >\r\n    <dimension name=\"Subscription ID\" />\r\n     <llm-emit-token-metric/>",
+    "tooltip": "Track usage of language model tokens. Use in the inbound section at any scope."
+  },
+  "llm-semantic-cache-lookup": {
+    "scope": "all",
+    "multiple": false,
+    "sections": [ "inbound" ],
+    "title": "Lookup from cache using semantic search",
+    "snippet": "<llm-semantic-cache-lookup score-threshold=\"0.05\" \"embeddings-backend-id\"=\"llm-backend\" \"embeddings-backend-auth\"=\"system-assigned\"/>\",",
+    "tooltip": "Get cached responses of language model requests, based on vector proximity of the prompt to previous requests, and a given score threshold."
+  },
+  "llm-semantic-cache-store": {
+    "scope": "all",
+    "multiple": false,
+    "sections": [ "outbound" ],
+    "title": "Store to semantic cache",
+    "snippet": "<llm-semantic-cache-store duration=\"60\" />",
+    "tooltip": "Caches responses according to the specified cache configuration. Use anywhere in the outbound section at Workspace, Product, API, or Operation scopes."
+  }
+}
